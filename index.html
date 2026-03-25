@@ -1,388 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAND NOTES 26</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-:root{
---primary:#2b7cff;
---bg:#f5f7fb;
---dark:#1f2937;
---card:#ffffff;
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,Arial;}
-body{background:var(--bg);color:#333;}
-header{
-background:var(--primary);
-color:white;
-padding:20px;
-text-align:center;
-}
-header h1{font-size:28px;}
-header p{opacity:.9}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Portfolio | 3D Experience</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Inter', -apple-system, sans-serif; background: #050505; color: white; }
+        canvas { display: block; }
+        
+        /* Glassmorphism UI overlay */
+        #ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            width: 100%;
+        }
 
-.hero img{
-width:100%;
-max-height:280px;
-object-fit:cover;
-}
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 24px;
+            display: inline-block;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
 
-.filters{
-display:flex;
-gap:10px;
-overflow:auto;
-padding:10px;
-background:white;
-position:sticky;
-top:0;
-z-index:10;
-}
-.filters button{
-border:none;
-background:#e8eefc;
-padding:8px 14px;
-border-radius:20px;
-cursor:pointer;
-}
-.filters button.active{background:var(--primary);color:white;}
+        .card:hover { transform: translateY(-10px); }
+        h1 { font-size: 2.5rem; margin: 0; background: linear-gradient(45deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #aaa; margin: 1rem 0; font-size: 1.1rem; }
+        
+        .badge-container { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .badge { background: rgba(79, 172, 254, 0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #4facfe; }
 
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:12px;
-padding:12px;
-}
-.card{
-background:var(--card);
-border-radius:14px;
-padding:10px;
-box-shadow:0 3px 8px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
-}
-.card img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px;
-}
-.card h3{font-size:14px;margin:6px 0;}
-.price{font-weight:600;color:var(--primary);}
-.card button{
-margin-top:auto;
-border:none;
-background:var(--primary);
-color:white;
-padding:8px;
-border-radius:8px;
-cursor:pointer;
-}
-
-.cart-btn{
-position:fixed;
-right:16px;
-bottom:16px;
-background:var(--primary);
-color:white;
-padding:14px;
-border-radius:50%;
-font-size:18px;
-cursor:pointer;
-box-shadow:0 4px 10px rgba(0,0,0,.2);
-}
-
-.cart-count{
-position:absolute;
-top:-5px;
-right:-5px;
-background:red;
-color:white;
-font-size:12px;
-padding:2px 6px;
-border-radius:50%;
-}
-
-.cart-modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.5);
-display:none;
-align-items:center;
-justify-content:center;
-padding:10px;
-}
-.cart-box{
-background:white;
-width:100%;
-max-width:500px;
-max-height:90vh;
-overflow:auto;
-border-radius:14px;
-padding:15px;
-}
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:8px;
-}
-.qty button{
-padding:2px 8px;
-}
-
-.checkout{
-margin-top:10px;
-}
-
-input,textarea{
-width:100%;
-padding:8px;
-margin:6px 0;
-border:1px solid #ccc;
-border-radius:6px;
-}
-
-.submit-btn{
-background:green;
-color:white;
-border:none;
-padding:10px;
-width:100%;
-border-radius:8px;
-cursor:pointer;
-}
-
-.whatsapp{
-position:fixed;
-left:16px;
-bottom:16px;
-background:#25D366;
-color:white;
-padding:12px 16px;
-border-radius:25px;
-text-decoration:none;
-font-size:14px;
-box-shadow:0 4px 10px rgba(0,0,0,.2);
-}
-</style>
+        .btn {
+            margin-top: 25px;
+            display: inline-block;
+            padding: 12px 30px;
+            background: #4facfe;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.5); }
+    </style>
 </head>
-
 <body>
 
-<header>
-<h1>HAND NOTES 26</h1>
-<p>Focus on Learning, Leave the Writing to Me!</p>
-<p>Gandhinagar | WhatsApp: 73836 36557</p>
-</header>
+    <div id="ui-layer">
+        <div class="card">
+            <h1>Creative Visuals</h1>
+            <p>Professional Content Creator & Video Editor</p>
+            <div class="badge-container">
+                <span class="badge">3D Design</span>
+                <span class="badge">Video Editing</span>
+                <span class="badge">Thumbnails</span>
+            </div>
+            <a href="mailto:your-email@example.com" class="btn">Let's Connect</a>
+        </div>
+    </div>
 
-<div class="hero">
-<img loading="lazy" src="https://i.ibb.co/S7KhJh0W/Screenshot-2026-03-01-104016.jpg" alt="HAND NOTES 26 banner">
-</div>
+    <script>
+        // 1. Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-<div class="filters">
-<button class="active" onclick="filterProducts('All')">All</button>
-<button onclick="filterProducts('Assignments')">Assignments</button>
-<button onclick="filterProducts('Drawing')">Drawing</button>
-</div>
+        // 2. Create Floating Particles/Geometry
+        const geometry = new THREE.IcosahedronGeometry(1, 1);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x4facfe,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.5
+        });
 
-<div class="products" id="products"></div>
+        const shapes = [];
+        for(let i = 0; i < 20; i++) {
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(
+                (Math.random() - 0.5) * 10,
+                (Math.random() - 0.5) * 10,
+                (Math.random() - 0.5) * 10
+            );
+            mesh.rotation.set(Math.random() * 2, Math.random() * 2, 0);
+            scene.add(mesh);
+            shapes.push(mesh);
+        }
 
-<div class="cart-btn" onclick="openCart()">
-🛒
-<span class="cart-count" id="cartCount">0</span>
-</div>
+        // 3. Lighting
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 2);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
 
-<a class="whatsapp" href="https://wa.me/917383636557" target="_blank">Chat on WhatsApp</a>
+        camera.position.z = 5;
 
-<div class="cart-modal" id="cartModal">
-<div class="cart-box">
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-<h3>Total: ₹ <span id="cartTotal">0</span></h3>
+        // 4. Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            shapes.forEach(shape => {
+                shape.rotation.x += 0.005;
+                shape.rotation.y += 0.005;
+            });
 
-<form class="checkout" id="orderForm"
-action="https://formspree.io/f/YOUR_FORMSPREE_ID"
-method="POST">
+            renderer.render(scene, camera);
+        }
 
-<input name="Customer Name" placeholder="Your Name" required>
-<input name="Phone" placeholder="Phone Number" required>
-<input type="email" name="Email" placeholder="Email Address" required>
-<textarea name="Instructions" placeholder="Special Instructions"></textarea>
+        // 5. Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
-<input type="hidden" name="Order Details" id="orderDetails">
+        // Mouse Move Effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            camera.position.x += (x - camera.position.x) * 0.05;
+            camera.position.y += (-y - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+        });
 
-<button class="submit-btn">Place Order</button>
-</form>
-
-<br>
-<button onclick="closeCart()">Close</button>
-</div>
-</div>
-
-<script>
-const products=[
-{
-name:"Best Writing Assignments",
-price:7,
-category:"Assignments",
-img:"https://i.ibb.co/GvGysHqX/Whats-App-Image-2026-03-01-at-10-30-27-AM.jpg",
-desc:"Premium writing delivered on time"
-},
-{
-name:"Assignment With Drawing",
-price:9,
-category:"Drawing",
-img:"https://i.ibb.co/JjwFR84M/Whats-App-Image-2026-03-01-at-10-30-27-AM-1.jpg",
-desc:"Neat diagrams and quality notes"
-},
-{
-name:"College Practical File",
-price:120,
-category:"Assignments",
-img:"https://i.ibb.co/GvGysHqX/Whats-App-Image-2026-03-01-at-10-30-27-AM.jpg",
-desc:"Complete practical writing"
-},
-{
-name:"Engineering Drawing",
-price:150,
-category:"Drawing",
-img:"https://i.ibb.co/JjwFR84M/Whats-App-Image-2026-03-01-at-10-30-27-AM-1.jpg",
-desc:"Accurate and clean diagrams"
-},
-{
-name:"Homework Writing",
-price:50,
-category:"Assignments",
-img:"https://i.ibb.co/GvGysHqX/Whats-App-Image-2026-03-01-at-10-30-27-AM.jpg",
-desc:"School homework support"
-},
-{
-name:"Project File Making",
-price:200,
-category:"Assignments",
-img:"https://i.ibb.co/GvGysHqX/Whats-App-Image-2026-03-01-at-10-30-27-AM.jpg",
-desc:"Beautiful project preparation"
-},
-{
-name:"Chart Drawing Work",
-price:80,
-category:"Drawing",
-img:"https://i.ibb.co/JjwFR84M/Whats-App-Image-2026-03-01-at-10-30-27-AM-1.jpg",
-desc:"Clean chart drawings"
-},
-{
-name:"Notes Writing Service",
-price:60,
-category:"Assignments",
-img:"https://i.ibb.co/GvGysHqX/Whats-App-Image-2026-03-01-at-10-30-27-AM.jpg",
-desc:"Neat and readable notes"
-}
-];
-
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-
-function renderProducts(list){
-const container=document.getElementById("products");
-container.innerHTML="";
-list.forEach((p,i)=>{
-container.innerHTML+=`
-<div class="card">
-<img loading="lazy" src="${p.img}" alt="${p.name}">
-<h3>${p.name}</h3>
-<p>${p.desc}</p>
-<div class="price">₹ ${p.price}</div>
-<button onclick="addToCart(${i})">Add to Cart</button>
-</div>`;
-});
-}
-
-function filterProducts(cat){
-document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
-event.target.classList.add("active");
-if(cat==="All") renderProducts(products);
-else renderProducts(products.filter(p=>p.category===cat));
-}
-
-function addToCart(i){
-let item=cart.find(c=>c.name===products[i].name);
-if(item) item.qty++;
-else cart.push({...products[i],qty:1});
-saveCart();
-}
-
-function saveCart(){
-localStorage.setItem("cart",JSON.stringify(cart));
-updateCartCount();
-}
-
-function updateCartCount(){
-document.getElementById("cartCount").innerText=
-cart.reduce((a,b)=>a+b.qty,0);
-}
-
-function openCart(){
-document.getElementById("cartModal").style.display="flex";
-renderCart();
-}
-
-function closeCart(){
-document.getElementById("cartModal").style.display="none";
-}
-
-function renderCart(){
-const box=document.getElementById("cartItems");
-box.innerHTML="";
-let total=0;
-cart.forEach((item,i)=>{
-let sub=item.price*item.qty;
-total+=sub;
-box.innerHTML+=`
-<div class="cart-item">
-<div>
-${item.name}<br>₹${item.price} x ${item.qty}
-</div>
-<div class="qty">
-<button onclick="changeQty(${i},-1)">-</button>
-<button onclick="changeQty(${i},1)">+</button>
-<button onclick="removeItem(${i})">x</button>
-</div>
-</div>`;
-});
-document.getElementById("cartTotal").innerText=total;
-
-let summary="";
-cart.forEach(i=>{
-summary+=`${i.name} | Qty:${i.qty} | ₹${i.price*i.qty}\n`;
-});
-summary+=`Total: ₹${total}`;
-document.getElementById("orderDetails").value=summary;
-}
-
-function changeQty(i,val){
-cart[i].qty+=val;
-if(cart[i].qty<=0) cart.splice(i,1);
-saveCart();
-renderCart();
-}
-
-function removeItem(i){
-cart.splice(i,1);
-saveCart();
-renderCart();
-}
-
-document.getElementById("orderForm").addEventListener("submit",function(){
-localStorage.removeItem("cart");
-cart=[];
-setTimeout(()=>{
-alert("Order placed! HAND NOTES 26 will contact you on WhatsApp to confirm.");
-},500);
-});
-
-renderProducts(products);
-updateCartCount();
-</script>
-
+        animate();
+    </script>
 </body>
 </html>
